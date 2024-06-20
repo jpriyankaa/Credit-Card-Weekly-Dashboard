@@ -1,0 +1,43 @@
+1. Creating Age Group:
+
+AgeGroup = SWITCH(
+  TRUE(),
+        'customer details'[Customer_Age] < 30,"20-30",
+        'customer details'[Customer_Age] >= 30 && 'customer details'[Customer_Age] <40, "30-40",
+        'customer details'[Customer_Age] >= 40 && 'customer details'[Customer_Age] <50, "40-50",
+        'customer details'[Customer_Age] >= 50 && 'customer details'[Customer_Age] <60, "50-60",
+        'customer details'[Customer_Age] >= 60 , "60+",
+        "Unknown"
+     )
+
+2. Creating Income Group:
+
+IncomeGroup = SWITCH(
+        TRUE(),
+        'customer details'[Income] <35000, "Low",
+        'customer details'[Income] >=35000 && 'customer details'[Income] <70000, "Medium",
+        'customer details'[Income] >=70000 , "High",
+        "Unknown"
+)
+
+3. Creating Week Number:
+
+Week_num2 = WEEKNUM('public cc_detail'[week_start_date])
+Revenue = 'public cc_detail'[annual_fees] + 'public cc_detail'[total_trans_amt] + 'public cc_detail'[interest_earned]
+
+
+4. Creating Current Week Revenue:
+
+Current_week_Revenue = CALCULATE(SUM('public cc_detail'[Revenue]),
+FILTER(
+ALL('public cc_detail'),
+'public cc_detail'[week_num2] = MAX('public cc_detail'[week_num2])))
+
+
+5. Creating Previous Week Revenue:
+
+Previous_week_Reveneue = CALCULATE(
+SUM('public cc_detail'[Revenue]),
+FILTER(
+ALL('public cc_detail'),
+'public cc_detail'[week_num2] = MAX('public cc_detail'[week_num2])-1))
